@@ -1,0 +1,27 @@
+<div *ngIf="country">
+  <h2>{{ country.name.common }}</h2>
+  <img *ngIf="country.cca2" [src]="'https://flagcdn.com/w320/' + country.cca2.toLowerCase() + '.png'" alt="Flag of {{ country.name.common }}">
+  
+  <p><strong>Capital:</strong> {{ country.capital[0] }}</p>
+  <p><strong>Region:</strong> {{ country.region }}</p>
+  <p><strong>Population:</strong> {{ country.population | number }}</p>
+  <p><strong>Languages:</strong> {{ getLanguages(country.languages) }}</p>
+  
+  <h3>Select Year:</h3>
+  <div>
+    <button *ngFor="let year of availableYears" (click)="onYearChange(year)" [class.active]="year === currentYear">
+      {{ year }}
+    </button>
+  </div>
+  
+  <h3>Holidays in {{ currentYear }}</h3>
+  <ul>
+    <li *ngFor="let holiday of holidays">
+      <strong>{{ holiday.localName }}</strong> - {{ holiday.date | date:'fullDate' }} ({{ holiday.type }})
+    </li>
+  </ul>
+  
+  <div *ngIf="holidays.length === 0">
+    <p>No public holidays available for this year.</p>
+  </div>
+</div>

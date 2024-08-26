@@ -1,0 +1,30 @@
+<div>
+  <h1>Welcome to CountryInfoApp!</h1>
+  <h2>Country Info Application</h2>
+
+  <input [(ngModel)]="searchTerm" type="text" placeholder="Search for a country" />
+  <button (click)="searchCountry()">Search</button>
+
+  <ul>
+    <li *ngFor="let country of countries">
+      <a [routerLink]="['/country', country.cca2]"><strong>{{ country.name.common }}</strong></a>
+    </li>
+  </ul>
+
+  <h3>Random Countries and Holidays</h3>
+  <ul>
+    <li *ngFor="let country of randomCountries">
+      <a [routerLink]="['/country', country.cca2]"><strong>{{ country.name.common }}</strong></a>
+      <div *ngIf="holidays[country.cca2] && holidays[country.cca2].length > 0">
+        <ul>
+          <li *ngFor="let holiday of holidays[country.cca2]">
+            {{ holiday.localName }} - {{ holiday.date | date:'fullDate' }} ({{ holiday.type }})
+          </li>
+        </ul>
+      </div>
+      <div *ngIf="holidays[country.cca2] && holidays[country.cca2].length === 0">
+        <p>No public holidays available for this year.</p>
+      </div>
+    </li>
+  </ul>
+</div>
