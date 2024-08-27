@@ -2,9 +2,11 @@ import { TestBed } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AppComponent],
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AppComponent
+      ],
     }).compileComponents();
   });
 
@@ -14,7 +16,7 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'CountryInfoApp' title`, () => {
+  it(`should have as title 'CountryInfoApp'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app.title).toEqual('CountryInfoApp');

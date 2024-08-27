@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
+
 @Component({
   selector: 'app-country-detail',
   standalone: true,
@@ -29,27 +30,19 @@ export class CountryDetailComponent implements OnInit {
         this.getHolidays(countryCode);
       });
   }
-
-getHolidays(countryCode: string): void {
-    console.log(`Fetching holidays for country code: ${countryCode} and year: ${this.currentYear}`);
+  getHolidays(countryCode: string): void {
+    const apiUrl = `https://date.nager.at/api/v2/PublicHoliday/2024/${countryCode}`;
     
-    this.http.get(`https://calendarific.com/api/v2/holidays?&api_key=VDuRQStR6wuVSJmHQVTQr7LCD5mRngs&country=${countryCode}&year=${this.currentYear}`)
-      .subscribe(
-        (response: any) => {
-          console.log('API response:', response);  // Виводимо весь результат
-          if (response && response.response && response.response.holidays) {
-            this.holidays = response.response.holidays;
-            console.log('Holidays data:', this.holidays);  // Виводимо список свят
-          } else {
-            this.holidays = [];
-            console.log('No holidays found for this country and year.');
-          }
-        },
-        (error: any) => {
-          console.error('API Error:', error);  // Виводимо будь-яку помилку
-          this.holidays = [];
+    this.http.get(apiUrl).subscribe((data: any) => {
+        if (data && Array.isArray(data)) {
+            this.holidays = data;
+        } else {
+            this.holidays = []; // Якщо немає даних, встановимо пустий масив
         }
-      );
+    }, (error) => {
+        console.error('Error occurred while fetching holidays:', error);
+        this.holidays = []; // Якщо помилка, встановимо пустий масив
+    });
 }
 
 

@@ -1,0 +1,83 @@
+/* Стиль для основного контейнера */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Стиль для toolbar */
+  mat-toolbar {
+    background-color: #3f51b5;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px 20px;
+  }
+  
+  /* Стиль для карток */
+  mat-card {
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Стиль для форми введення */
+  mat-form-field {
+    width: 100%;
+  }
+  
+  /* Стиль для заголовків карток */
+  mat-card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #3f51b5;
+  }
+  
+  /* Стиль для списку */
+  mat-card-content ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  mat-card-content ul li {
+    padding: 10px 0;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* Видалити межу з останнього елемента */
+  mat-card-content ul li:last-child {
+    border-bottom: none;
+  }
+  
+  /* Стиль для посилань */
+  mat-card-content a {
+    color: #3f51b5;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  mat-card-content a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Стиль для повідомлень про відсутність свят */
+  .no-holidays {
+    color: #ff4081;
+    font-style: italic;
+  }
+  
+  /* Адаптивність */
+  @media (max-width: 600px) {
+    .container {
+      padding: 10px;
+    }
+  
+    mat-toolbar {
+      font-size: 20px;
+      padding: 5px 10px;
+    }
+  
+    mat-card-title {
+      font-size: 18px;
+    }
+  }
+  

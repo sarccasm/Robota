@@ -4,11 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { HttpClient } from '@angular/common/http';
+import { MatButtonModule } from '@angular/material/button'; 
+import { MatInputModule } from '@angular/material/input'; 
+import { MatCardModule } from '@angular/material/card'; 
+import { MatToolbarModule } from '@angular/material/toolbar'; 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, HttpClientModule],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    RouterModule, 
+    HttpClientModule,
+    MatButtonModule, 
+    MatInputModule,  
+    MatCardModule,   
+    MatToolbarModule 
+  ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
@@ -16,7 +29,7 @@ export class HomeComponent {
   searchTerm: string = '';
   countries: any[] = [];
   randomCountries: any[] = [];
-  holidays: { [key: string]: any[] } = {}; // об'єкт для зберігання свят за країнами
+  holidays: { [key: string]: any[] } = {}; 
 
   constructor(private http: HttpClient) {}
 
@@ -42,10 +55,20 @@ export class HomeComponent {
 
   getHolidays(countryCode: string): void {
     const apiUrl = `https://date.nager.at/api/v2/PublicHoliday/2024/${countryCode}`;
+    
     this.http.get(apiUrl).subscribe((data: any) => {
-      this.holidays[countryCode] = data;
-    }, () => {
-      this.holidays[countryCode] = []; // якщо помилка або немає даних, встановлюємо пустий масив
+      if (data && Array.isArray(data)) {
+        this.holidays[countryCode] = data;
+      } else {
+        this.holidays[countryCode] = []; 
+      }
+    }, (error) => {
+      if (error.status === 404) {
+        console.log(`No public holidays found for country code ${countryCode} and year 2024`);
+        this.holidays[countryCode] = []; 
+      } else {
+        console.error('Error occurred while fetching holidays:', error);
+      }
     });
   }
 

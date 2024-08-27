@@ -1,30 +1,42 @@
-<div>
-  <h1>Welcome to CountryInfoApp!</h1>
-  <h2>Country Info Application</h2>
+<div class="container">
+  <mat-card>
+    <mat-card-title>Search Countries</mat-card-title>
+    <mat-form-field appearance="fill">
+      <mat-label>Enter Country name</mat-label>
+      <input matInput [(ngModel)]="searchTerm" placeholder="Search for a country" />
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="searchCountry()">Search</button>
+  </mat-card>
 
-  <input [(ngModel)]="searchTerm" type="text" placeholder="Search for a country" />
-  <button (click)="searchCountry()">Search</button>
+  <mat-card *ngIf="countries.length > 0">
+    <mat-card-title>Search Results</mat-card-title>
+    <mat-card-content>
+      <ul>
+        <li *ngFor="let country of countries">
+          <a [routerLink]="['/country', country.cca2]">{{ country.name.common }}</a>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
 
-  <ul>
-    <li *ngFor="let country of countries">
-      <a [routerLink]="['/country', country.cca2]"><strong>{{ country.name.common }}</strong></a>
-    </li>
-  </ul>
-
-  <h3>Random Countries and Holidays</h3>
-  <ul>
-    <li *ngFor="let country of randomCountries">
-      <a [routerLink]="['/country', country.cca2]"><strong>{{ country.name.common }}</strong></a>
-      <div *ngIf="holidays[country.cca2] && holidays[country.cca2].length > 0">
-        <ul>
-          <li *ngFor="let holiday of holidays[country.cca2]">
-            {{ holiday.localName }} - {{ holiday.date | date:'fullDate' }} ({{ holiday.type }})
-          </li>
-        </ul>
-      </div>
-      <div *ngIf="holidays[country.cca2] && holidays[country.cca2].length === 0">
-        <p>No public holidays available for this year.</p>
-      </div>
-    </li>
-  </ul>
+  <mat-card *ngIf="randomCountries.length > 0">
+    <mat-card-title>Random Countries and Their Holidays</mat-card-title>
+    <mat-card-content>
+      <ul>
+        <li *ngFor="let country of randomCountries">
+          <strong>
+            <a [routerLink]="['/country', country.cca2]">{{ country.name.common }}</a>
+          </strong>
+          <ul *ngIf="holidays[country.cca2] && holidays[country.cca2].length > 0">
+            <li *ngFor="let holiday of holidays[country.cca2]">
+              {{ holiday.name }} - {{ holiday.date }}
+            </li>
+          </ul>
+          <p *ngIf="holidays[country.cca2] && holidays[country.cca2].length === 0">
+            No holidays found for this country in 2024.
+          </p>
+        </li>
+      </ul>
+    </mat-card-content>
+  </mat-card>
 </div>
