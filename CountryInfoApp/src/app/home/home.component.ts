@@ -30,6 +30,7 @@ export class HomeComponent {
   countries: any[] = [];
   randomCountries: any[] = [];
   holidays: { [key: string]: any[] } = {};
+  noHolidaysMessage: string = '';
 
   constructor(private http: HttpClient) {}
 
@@ -56,27 +57,30 @@ export class HomeComponent {
   }
 
   getHolidays(countryCode: string): void {
-    const apiUrl = `https://date.nager.at/api/v2/PublicHoliday/2024/${countryCode}`;
+    const apiUrl = `https://date.nager.at/api/v3/PublicHolidays/2024/${countryCode}`;
 
     this.http.get(apiUrl).subscribe(
       (data: any) => {
-        if (data && Array.isArray(data)) {
+        if (data && Array.isArray(data) && data.length > 0) {
           this.holidays[countryCode] = data;
         } else {
           this.holidays[countryCode] = [];
+          this.showNoHolidaysMessage(countryCode);
         }
       },
       (error) => {
         if (error.status === 404) {
-          console.log(
-            `No public holidays found for country code ${countryCode} and year 2024`,
-          );
           this.holidays[countryCode] = [];
+          this.showNoHolidaysMessage(countryCode);
         } else {
           console.error('Error occurred while fetching holidays:', error);
         }
       },
     );
+  }
+
+  showNoHolidaysMessage(countryCode: string): void {
+    this.noHolidaysMessage = `Holidays for the country with the code ${countryCode} not found for 2024.`;
   }
 
   shuffleArray(array: any[]): any[] {

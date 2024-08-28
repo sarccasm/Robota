@@ -39,4 +39,11 @@
       </ul>
     </mat-card-content>
   </mat-card>
+
+  <mat-card *ngIf="noHolidaysMessage">
+    <mat-card-title>Notice</mat-card-title>
+    <mat-card-content>
+      <p>{{ noHolidaysMessage }}</p>
+    </mat-card-content>
+  </mat-card>
 </div>

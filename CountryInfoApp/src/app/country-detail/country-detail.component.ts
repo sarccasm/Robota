@@ -28,16 +28,25 @@ export class CountryDetailComponent implements OnInit {
 
   ngOnInit(): void {
     const countryCode = this.route.snapshot.paramMap.get('code') || '';
+    console.log('Fetching country data for code:', countryCode); // Логування коду країни
+
     this.http
       .get(`https://restcountries.com/v3.1/alpha/${countryCode}`)
-      .subscribe((data: any) => {
-        this.country = data[0];
-        console.log(this.country);
-        this.getHolidays(countryCode);
-      });
+      .subscribe(
+        (data: any) => {
+          this.country = data[0];
+          console.log(this.country);
+          this.getHolidays(countryCode, this.currentYear);
+        },
+        (error) => {
+          console.error('Error occurred while fetching country data:', error);
+        },
+      );
   }
-  getHolidays(countryCode: string): void {
-    const apiUrl = `https://date.nager.at/api/v2/PublicHoliday/2024/${countryCode}`;
+
+  getHolidays(countryCode: string, year: number): void {
+    const apiUrl = `https://date.nager.at/api/v3/PublicHolidays/${year}/${countryCode}`;
+    console.log('Fetching holidays for country:', countryCode, 'URL:', apiUrl); // Логування для перевірки
 
     this.http.get(apiUrl).subscribe(
       (data: any) => {
@@ -57,7 +66,7 @@ export class CountryDetailComponent implements OnInit {
   onYearChange(year: number): void {
     this.currentYear = year;
     const countryCode = this.route.snapshot.paramMap.get('code') || '';
-    this.getHolidays(countryCode);
+    this.getHolidays(countryCode, year);
   }
 
   getLanguages(languages: any): string {
